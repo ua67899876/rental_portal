@@ -19,9 +19,9 @@ class Apartment < ApplicationRecord
   }
 
   scope :search, ->(type) do
-    return includes(:deeds).all if type.blank?
+    return Apartment.all if type.blank?
 
-    includes(:deeds).where(apartment_type: type)
+    where(apartment_type: type)
   end
 
   def rent_available?
@@ -37,7 +37,7 @@ class Apartment < ApplicationRecord
   private
 
   def can_update_rent?
-    return if Date.current - updated_at.to_date > 30.days && rent_changed?
+    return unless (Date.current - updated_at.to_date).to_i < 30.days && rent_changed?
 
     errors.add(:rent, "can't be updated before 30 days")
   end

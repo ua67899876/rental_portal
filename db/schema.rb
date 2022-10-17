@@ -12,8 +12,11 @@
 
 ActiveRecord::Schema.define(version: 2022_10_14_204844) do
 
-  create_table "apartments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
-    t.integer "apartment_type", null: false
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "apartments", force: :cascade do |t|
+    t.integer "apartment_type", default: 0, null: false
     t.decimal "rent", precision: 8, scale: 2, default: "0.0", null: false
     t.string "location", default: "", null: false
     t.bigint "owner_id", null: false
@@ -22,7 +25,7 @@ ActiveRecord::Schema.define(version: 2022_10_14_204844) do
     t.index ["owner_id"], name: "index_apartments_on_owner_id"
   end
 
-  create_table "appointments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "appointments", force: :cascade do |t|
     t.bigint "requester_id", null: false
     t.bigint "moderator_id", null: false
     t.bigint "apartment_id", null: false
@@ -35,13 +38,13 @@ ActiveRecord::Schema.define(version: 2022_10_14_204844) do
     t.index ["requester_id"], name: "index_appointments_on_requester_id"
   end
 
-  create_table "deeds", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
-    t.integer "deed_type", null: false
-    t.datetime "start_time", null: false
-    t.datetime "end_time", null: false
+  create_table "deeds", force: :cascade do |t|
+    t.integer "deed_type", default: 0, null: false
+    t.date "starts_on", null: false
+    t.date "ends_on", null: false
     t.bigint "apartment_id"
     t.bigint "owner_id", null: false
-    t.bigint "renter_id", null: false
+    t.bigint "renter_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["apartment_id"], name: "index_deeds_on_apartment_id"
@@ -49,7 +52,7 @@ ActiveRecord::Schema.define(version: 2022_10_14_204844) do
     t.index ["renter_id"], name: "index_deeds_on_renter_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.integer "user_type", default: 0, null: false
     t.string "name", default: "", null: false

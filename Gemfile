@@ -7,6 +7,12 @@ ruby '2.7.2'
 gem 'rails', '~> 5.2.8', '>= 5.2.8.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '>= 0.4.4', '< 0.6.0'
+# Use pg as the database for Active Record
+gem 'pg', '~> 1.2.3'
+# performance dashboard for Postgres
+gem 'pghero', '~> 2.7'
+# required by the pghero gem to suggest index.
+gem 'pg_query'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Use SCSS for stylesheets

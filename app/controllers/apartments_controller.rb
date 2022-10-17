@@ -2,7 +2,8 @@ class ApartmentsController < ApplicationController
   before_action :set_apartment, only: %i[edit update rent_apartment]
 
   def index
-    @apartments = Apartment.search(params[:type])
+    type = params[:type]
+    @apartments = Apartment.apartment_types.keys.include?(type) && Apartment.search(type) || Apartment.all
   end
 
   def create
@@ -23,11 +24,11 @@ class ApartmentsController < ApplicationController
   end
 
   private
-  
+
   def set_apartment
     @apartment = Apartment.find(params[:id])
   end
-  
+
   def apartment_params
     params.require(:apartment).permit(:owner_id, :location, :rent, :apartment_type)
   end
