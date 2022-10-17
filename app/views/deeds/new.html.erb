@@ -1,0 +1,13 @@
+<%= form_with url: apartment_deeds_path(@apartment), scope: :deed, method: :post, local: true do |f| %>
+  <div class="field">
+    <%= f.label :starts_on %><br />
+    <%= f.date_field :starts_on %>
+  </div>
+
+  <div class="field">
+    <%= f.label :ends_on %><br />
+    <%= f.date_field :ends_on %>
+  </div>
+
+  <%= f.submit %>
+<% end %>

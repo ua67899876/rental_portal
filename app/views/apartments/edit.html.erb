@@ -1,0 +1,17 @@
+<%= render "shared/errors", resource: @apartment %>
+
+<%= form_for @apartment do |f| %>
+  <div class="field">
+    <%= f.label :apartment_type %><br />
+    <%= f.select :apartment_type, Apartment.apartment_types.keys %>
+  </div>
+  <div class="field">
+    <%= f.label :rent %><br />
+    <%= f.number_field :rent %>
+  </div>
+  <div class="field">
+    <%= f.label :location %><br />
+    <%= f.text_field :location %>
+  </div>
+  <%= f.submit %>
+<% end %>

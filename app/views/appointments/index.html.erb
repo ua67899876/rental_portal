@@ -1,0 +1,54 @@
+
+    <h1>My Appointments</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Address</th>
+          <th scope="col">Moderator</th>
+          <th scope="col">Requester</th>
+          <th scope="col">Status</th>
+          <th scope="col">Assigned Date</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @appointments.each_with_index do |appointment, index| %>
+        <tr>
+          <th scope="row">
+          <%= index + 1 %>
+          </th>
+          <td>
+            <%= appointment.apartment.location %>
+          </td>
+          <td>
+            <%= appointment.apartment.owner.email %>
+          </td>
+          <td>
+            <%= appointment.apartment.rent %>
+          </td>
+          <td>
+            <%= appointment.status.titleize %>
+          </td>
+          <td>
+            <%= appointment.start_at.presence || "Not Assigned Yet!" %>
+          </td>
+
+          <td>
+            <% if appointment.pending? && current_user.renter? %>
+                <%= link_to  "Visited", appointment_visited_path(appointment), method: :post, class: "btn btn-primary" %>
+            <% end %>
+
+            <% if current_user.owner? && appointment.waiting? %>
+                <%= form_with url: appointment_path(appointment), method: :patch, scope: :appointment, local: true do |f| %>
+                        <%= f.label :start_at, "Select Date" %>
+                        <%= f.date_field :start_at %>
+
+                        <%= f.submit class: "btn btn-success" %>
+                <% end %>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>

@@ -1,0 +1,43 @@
+
+<h1>Appartments</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Address</th>
+      <th scope="col">Owner</th>
+      <th scope="col">Rent</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% current_user.apartments.each_with_index do |apartment, index| %>
+    <tr>
+      <th scope="row">
+      <%= index + 1 %>
+      </th>
+      <td>
+        <%= apartment.location %>
+      </td>
+      <td>
+        <%= apartment.owner.email %>
+      </td>
+      <td>
+        <%= apartment.rent %>
+      </td>
+      <td>
+        <%= link_to('Edit', edit_apartment_path(apartment), class: 'btn btn-primary') if current_user == apartment.owner %>
+
+        <% if apartment.rent_available? && current_user&.renter? %>
+          <%= link_to 'Rent', new_apartment_deed_path(apartment), class: 'btn btn-primary' %>
+          <% if current_user.requester_appointments.where(apartment: apartment).empty? %>
+            <%= link_to 'Appoitment', appointments_path(apartment_id: apartment.id), method: :post, class: 'btn btn-primary' %>
+          <% end %>
+        <% elsif current_user&.renter? %>
+          Rent Out
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
